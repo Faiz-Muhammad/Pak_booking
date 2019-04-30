@@ -1,0 +1,5 @@
+class ChangeDatatypeOfColumnInHotels < ActiveRecord::Migration[5.2]
+  def change
+    change_column :hotels, :rating, :decimal, precision: 2, scale: 1
+  end
+end

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  room_number: MyString
+  price: 1
+  room_type: MyString
+  booked_status: false
+  hotel: one
+
+two:
+  room_number: MyString
+  price: 1
+  room_type: MyString
+  booked_status: false
+  hotel: two
