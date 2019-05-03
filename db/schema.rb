@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_062059) do
+ActiveRecord::Schema.define(version: 2019_04_30_075109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer "number_of_users"
+    t.date "check_in_date"
+    t.date "check_out_date"
+    t.bigint "hotel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hotel_id"], name: "index_bookings_on_hotel_id"
+  end
 
   create_table "hotels", force: :cascade do |t|
     t.string "name"
@@ -22,6 +32,15 @@ ActiveRecord::Schema.define(version: 2019_04_30_062059) do
     t.decimal "rating", precision: 2, scale: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "room_bookings", force: :cascade do |t|
+    t.bigint "room_id"
+    t.bigint "booking_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_room_bookings_on_booking_id"
+    t.index ["room_id"], name: "index_room_bookings_on_room_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -35,5 +54,8 @@ ActiveRecord::Schema.define(version: 2019_04_30_062059) do
     t.index ["hotel_id"], name: "index_rooms_on_hotel_id"
   end
 
+  add_foreign_key "bookings", "hotels"
+  add_foreign_key "room_bookings", "bookings"
+  add_foreign_key "room_bookings", "rooms"
   add_foreign_key "rooms", "hotels"
 end

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number_of_users: 1
+  check_in_date: 2019-04-30
+  check_out_date: 2019-04-30
+  hotel: one
+
+two:
+  number_of_users: 1
+  check_in_date: 2019-04-30
+  check_out_date: 2019-04-30
+  hotel: two

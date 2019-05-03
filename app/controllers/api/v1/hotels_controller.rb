@@ -1,7 +1,7 @@
 module Api
   module V1
     class HotelsController < ApplicationController
-      before_action :set_hotel, only: [:edit, :update, :show, :destroy]
+      before_action :set_hotel, only: [:update, :show, :destroy, :available_rooms]
 
       def index
         @hotels = Hotel.all
@@ -10,18 +10,19 @@ module Api
       end
 
       def create
-        @hotel = Hotel.build(hotel_params)
+        @hotel = Hotel.new(hotel_params)
 
-        if @hotel.save
-          render json: @hotel, status: :created, location: @hotel
+        if @hotel.save!
+          render json: @hotel, status: :created
         else
           render json: @hotel.errors, status: :unprocessable_entity
         end
       end
 
       def update
-        if @hotel.update(hotel_params)
-          render json: @hotel, status: :updated, location: @hotel
+        if @hotel.update!(hotel_params)
+
+          render json: @hotel, status: :updated
         else
           render json: @hotel.errors, status: :unprocessable_entity
         end
@@ -32,12 +33,22 @@ module Api
       end
 
       def destroy
-        @hotel.destroy
+        @hotel.destroy!
+      end
+
+      def available_rooms
+        range_date = []
+        (Booking.first.check_in_date..Booking.first.check_out_date).select { |d|  range_date << d }
       end
 
       private
+        def available_room_params
+          params.require(:hotel).permit(:check_in, :check_out)
+        end
+
         def hotel_params
-          params.rquire(:hotel).permit(:name, :location, :city, :rating)
+          params.require(:hotel).permit(:name, :location, :city, :rating,
+             rooms_attributes: [:id, :price, :room_number, :room_type, :booked_status])
         end
 
         def set_hotel

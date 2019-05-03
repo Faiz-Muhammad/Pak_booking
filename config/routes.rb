@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :hotels
       resources :rooms
+      resources :bookings
+      get '/available_rooms/', to: 'bookings#available_rooms'
     end
   end
 
